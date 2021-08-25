@@ -1,8 +1,8 @@
 package algohub.project.controller.unit.algorithm;
 
 import algohub.project.config.EnableMockMvc;
+import algohub.project.controller.algorithm.AlgoCategoryController;
 import algohub.project.domain.algorithm.AlgoCategory;
-import algohub.project.domain.algorithm.Algorithm;
 import algohub.project.repository.algorithm.AlgoCategoryRepository;
 import algohub.project.service.AlgoCategoryService;
 import org.hamcrest.Matchers;
@@ -26,7 +26,7 @@ import static org.mockito.BDDMockito.given;
 
 @EnableMockMvc
 @ExtendWith(SpringExtension.class)
-@WebMvcTest // 컨트롤러에 대한 것만 SpringContext처럼 테스트하고 나머지는 Mock의 stub 코드 만들어야함
+@WebMvcTest(AlgoCategoryController.class) // 컨트롤러에 대한 것만 SpringContext처럼 테스트하고 나머지는 Mock의 stub 코드 만들어야함
 class AlgoCategoryControllerUnitTest {
 
     @Autowired
@@ -39,7 +39,7 @@ class AlgoCategoryControllerUnitTest {
     private AlgoCategoryRepository algoCategoryRepository;
 
     @Test
-    @DisplayName("알고리즘 카테고리 컨트롤러 단위 테스트")
+    @DisplayName("알고리즘 카테고리 컨트롤러 단위테스트")
     void algoCategoriesTest() throws Exception {
 
         List<AlgoCategory> categories = new ArrayList<>();

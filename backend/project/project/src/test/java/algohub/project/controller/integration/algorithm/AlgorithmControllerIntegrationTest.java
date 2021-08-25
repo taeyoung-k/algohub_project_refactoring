@@ -1,11 +1,10 @@
 package algohub.project.controller.integration.algorithm;
 
 import algohub.project.config.EnableMockMvc;
-import algohub.project.domain.algorithm.AlgoCategory;
-import algohub.project.repository.algorithm.AlgoCategoryRepository;
-import algohub.project.service.AlgoCategoryService;
+import algohub.project.controller.algorithm.dto.AlgoListDto;
+import algohub.project.repository.algorithm.AlgorithmRepository;
+import algohub.project.service.AlgorithmService;
 import com.google.gson.Gson;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,36 +19,37 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
+
 @EnableMockMvc
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class AlgoCategoryControllerIntegrationTest {
+public class AlgorithmControllerIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    private AlgoCategoryService algoCategoryService;
+    private AlgorithmService algorithmService;
 
     @Autowired
-    private AlgoCategoryRepository algoCategoryRepository;
+    private AlgorithmRepository algorithmRepository;
 
     @Test
-    @DisplayName("알고리즘 카테고리 컨트롤러 통합테스트")
-    void algoCategoriesTest() throws Exception {
-        // given
+    @DisplayName("알고리즘 문제 조회 컨트롤러 통합테스트")
+    void test() throws Exception {
+        //given
         // 사용자가 추가되어야 함
 
-        // when
+        //when
         Gson gson = new Gson();
-        List<AlgoCategory> algoCategory = algoCategoryService.getAlgoCategory();
-        String mvcResultJson = gson.toJson(algoCategory);
+        String categoryId = "1";
+        List<AlgoListDto> algoList = algorithmService.getAlgoList(categoryId);
+        String result = gson.toJson(algoList);
 
-        // then
-        mvc.perform(MockMvcRequestBuilders.get("/api/categories").accept(MediaType.APPLICATION_JSON))
+        //then
+        mvc.perform(MockMvcRequestBuilders.get("/api/algorithms/" + categoryId).accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.containsString(mvcResultJson)))
+                .andExpect(MockMvcResultMatchers.content().json(result))
                 .andDo(MockMvcResultHandlers.print());
     }
-
 }
